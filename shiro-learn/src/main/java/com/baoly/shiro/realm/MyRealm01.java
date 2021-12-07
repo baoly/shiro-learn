@@ -4,13 +4,12 @@ import com.baoly.shiro.bean.User;
 import com.baoly.shiro.mapper.UserMapper;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.realm.AuthenticatingRealm;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * AuthenticatingRealm 做登录的Realm
  */
-@Component
 public class MyRealm01 extends AuthenticatingRealm {
 
     @Autowired
@@ -32,6 +31,9 @@ public class MyRealm01 extends AuthenticatingRealm {
         if (user == null) {
             throw new UnknownAccountException("用户名不存在");
         }
-        return new SimpleAuthenticationInfo(user.getUserName(),user.getPassword(),getName());
+        // 不加盐
+//        return new SimpleAuthenticationInfo(username,user.getPassword(),getName());
+        //加盐 迭代次数统一配置
+        return new SimpleAuthenticationInfo(username, user.getPassword(), ByteSource.Util.bytes(username), getName());
     }
 }
