@@ -19,10 +19,12 @@
     </bean>
     <bean class="org.apache.shiro.spring.web.ShiroFilterFactoryBean" id="shiroFilter">
         <property name="securityManager" ref="defaultWebSecurityManager"/>
+        <property name="loginUrl" value="/index"/>
         <property name="filterChainDefinitions">
             <!-- doLogin可以匿名访问 其他的需要认证 -->
             <value>
                 /doLogin=anon
+                /formLogin=anon
                 /**=authc
             </value>
         </property>
