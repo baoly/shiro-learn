@@ -27,7 +27,7 @@ public class MyRealm01 extends AuthenticatingRealm {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
         String username = usernamePasswordToken.getUsername();
         //根据username 去数据库中查询用户信息
-        User user = userMapper.selectUserName(username);
+        User user = userMapper.selectUserInfo(username);
         if (user == null) {
             throw new UnknownAccountException("用户名不存在");
         }

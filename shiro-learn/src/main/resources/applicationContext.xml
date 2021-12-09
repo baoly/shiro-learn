@@ -6,6 +6,14 @@
     <context:component-scan base-package="com.baoly">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
+    <bean class="com.baoly.shiro.realm.AdminRealm" id="adminRealm">
+        <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <property name="hashAlgorithmName" value="md5"/>
+                <property name="hashIterations" value="1024"/>
+            </bean>
+        </property>
+    </bean>
     <bean class="com.baoly.shiro.realm.MyRealm01" id="myRealm01">
         <property name="credentialsMatcher">
             <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
@@ -15,11 +23,18 @@
         </property>
     </bean>
     <bean class="org.apache.shiro.web.mgt.DefaultWebSecurityManager" id="defaultWebSecurityManager">
-        <property name="realm" ref="myRealm01"/>
+        <property name="realms">
+            <list>
+                <ref bean="myRealm01"/>
+                <ref bean="adminRealm"/>
+            </list>
+        </property>
     </bean>
     <bean class="org.apache.shiro.spring.web.ShiroFilterFactoryBean" id="shiroFilter">
         <property name="securityManager" ref="defaultWebSecurityManager"/>
         <property name="loginUrl" value="/index"/>
+        <!--权限不足跳转的url-->
+        <property name="unauthorizedUrl" value="unauthorizedUrl"/>
         <property name="filterChainDefinitions">
             <!-- doLogin可以匿名访问 其他的需要认证 -->
             <value>
@@ -52,5 +67,11 @@
     </bean>
     <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--    开启基于注解的权限配置-->
+    <bean class="org.apache.shiro.spring.LifecycleBeanPostProcessor" id="beanPostProcessor"></bean>
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="defaultWebSecurityManager"/>
     </bean>
 </beans>

@@ -2,6 +2,10 @@ package com.baoly.shiro.mapper;
 
 import com.baoly.shiro.bean.User;
 
+import java.util.Set;
+
 public interface UserMapper {
-    User selectUserName(String username);
+    User selectUserInfo(String username);
+
+    Set<String> selectRolesByUser(String username);
 }

@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.baoly.shiro.mapper.UserMapper">
-    <select id="selectUserName" resultType="com.baoly.shiro.bean.User">
+    <select id="selectUserInfo" resultType="com.baoly.shiro.bean.User">
         select *
         from tb_user
         where user_name = #{username}
     </select>
-
+    <select id="selectRolesByUser" resultType="java.lang.String">
+        SELECT
+	    role_name
+        FROM
+	tb_user t1
+	JOIN tb_user_role t2 ON t1.id = t2.user_id
+	JOIN tb_role t3 ON t2.role_id = t3.role_id
+    WHERE
+	t1.user_name = #{username}
+    </select>
 </mapper>
