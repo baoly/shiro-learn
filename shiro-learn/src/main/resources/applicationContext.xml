@@ -25,6 +25,7 @@
             <value>
                 /doLogin=anon
                 /formLogin=anon
+                /hello=user
                 /**=authc
             </value>
         </property>

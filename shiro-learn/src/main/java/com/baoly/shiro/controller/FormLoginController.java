@@ -2,6 +2,7 @@ package com.baoly.shiro.controller;
 
 import com.baoly.shiro.result.Result;
 import com.baoly.shiro.util.DateUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -16,7 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 public class FormLoginController {
     @PostMapping("/formLogin")
     public String login(String username, String password, HttpServletRequest request) {
+        String rememberMe = request.getParameter("rememberMe");
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        if (StringUtils.isNotEmpty(rememberMe)) {
+            token.setRememberMe(true);
+        }
         try {
             SecurityUtils.getSubject().login(token);
             return "success";
@@ -39,7 +44,7 @@ public class FormLoginController {
             SecurityUtils.getSubject().logout();
             return Result.ok("注销成功", currentTime);
         } catch (Exception e) {
-            return Result.error("注销失败",currentTime);
+            return Result.error("注销失败", currentTime);
         }
 
     }
