@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class FormLoginController {
     @PostMapping("/formLogin")
-    public String login(String username, String password, HttpServletRequest request) {
+    public String login(HttpServletRequest request) {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         if (StringUtils.isNotEmpty(rememberMe)) {

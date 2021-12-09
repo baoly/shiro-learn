@@ -40,6 +40,7 @@
             <value>
                 /doLogin=anon
                 /formLogin=anon
+                <!--rememberMe之后能访问hello-->
                 /hello=user
                 /**=authc
             </value>
