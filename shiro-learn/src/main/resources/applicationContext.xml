@@ -6,6 +6,7 @@
     <context:component-scan base-package="com.baoly">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
+
     <bean class="com.baoly.shiro.realm.AdminRealm" id="adminRealm">
         <property name="credentialsMatcher">
             <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
@@ -22,7 +23,11 @@
             </bean>
         </property>
     </bean>
+    <bean class="org.apache.shiro.cache.ehcache.EhCacheManager" id="ehCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+    </bean>
     <bean class="org.apache.shiro.web.mgt.DefaultWebSecurityManager" id="defaultWebSecurityManager">
+        <property name="cacheManager" ref="ehCacheManager"/>
         <property name="realms">
             <list>
                 <ref bean="myRealm01"/>
